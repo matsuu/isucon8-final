@@ -1,7 +1,9 @@
 package bench
 
 import (
+	"crypto/tls"
 	"log"
+	"net/http"
 	"os"
 	"time"
 )
@@ -17,4 +19,7 @@ func init() {
 	// 見せない内部ログ用
 	log.SetFlags(log.Lshortfile | log.LstdFlags | log.Lmicroseconds)
 	log.SetOutput(os.Stderr)
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{
+		InsecureSkipVerify: true,
+	}
 }

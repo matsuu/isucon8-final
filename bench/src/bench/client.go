@@ -3,6 +3,7 @@ package bench
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -154,7 +155,11 @@ func NewClient(base, bankid, name, password string, timeout, retire time.Duratio
 	if err != nil {
 		return nil, errors.Wrapf(err, "cookiejar.New Failed.")
 	}
-	transport := &http.Transport{}
+	transport := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
+	}
 	hc := &http.Client{
 		Jar:       jar,
 		Transport: transport,
